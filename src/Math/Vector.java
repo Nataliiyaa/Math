@@ -7,8 +7,10 @@ public class Vector extends Matrix{
         super(data.length, 1, data);
     }
 
-    protected Vector(int row, double[] base) {
-        super(row, 1, base);
+
+
+    protected Vector(int row, double[] data) {
+        super(row, 1, data);
     }
 
     public String getType() {
@@ -19,6 +21,8 @@ public class Vector extends Matrix{
         this.type = type;
     }
 
+
+
     @Override
     public void transpose() {
         super.transpose();
@@ -27,6 +31,21 @@ public class Vector extends Matrix{
             case "Vector-row": setType("Vector-column");
         }
     }
+
+
+    private static final float EPSILON = 1e-10f;
+
+    public float length() {
+        double[] data = getData();
+        double lenSqr = 0;
+        for (double item : data) {
+            lenSqr += item * item;
+        }
+        if (lenSqr < EPSILON)
+            return 0;
+        return (float)Math.sqrt(lenSqr);
+    }
+
 
     @Override
     public void print() {

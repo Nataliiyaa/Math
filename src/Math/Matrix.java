@@ -27,16 +27,12 @@ public class Matrix {
         return data.clone();
     }
 
-    private void setRows(int rows) {
-        this.rows = rows;
+    public double getAt(int row, int col) {
+        return data[row * cols + col];
     }
 
-    private void setCols(int cols) {
-        this.cols = cols;
-    }
-
-    private void setBase(double[] base) {
-        this.data = base;
+    public void setAt(int row, int col, double value) {
+        data[row * cols + col] = value;
     }
 
     public void print() {
@@ -128,4 +124,9 @@ public class Matrix {
         }
         return new Matrix(rows, cols, result);
     }
+
+    public static Matrix zero(int rows, int cols) {
+        return new Matrix(rows, cols, new double[rows * cols]);
+    }
+
 }
