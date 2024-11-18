@@ -5,7 +5,7 @@ public class Matrix4X4 {
 
     public Matrix4X4(double[][] m) {
         data = new double[16];
-        if (m.length != (16)) {
+        if (m.length != 4 || m[0].length != 4) {
             throw new IllegalArgumentException("Incorrect array size in " + this.getClass().getSimpleName());
         }
         for (int i = 0; i < 4; i++)
@@ -14,6 +14,9 @@ public class Matrix4X4 {
     }
 
     public Matrix4X4(double[] arr) {
+        if (arr.length != (16)) {
+            throw new IllegalArgumentException("Incorrect array size in " + this.getClass().getSimpleName());
+        }
         data = arr;
     }
 

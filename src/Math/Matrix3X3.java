@@ -5,7 +5,7 @@ public class Matrix3X3 {
 
     public Matrix3X3(double[][] m) {
         data = new double[9];
-        if (m.length != (9)) {
+        if (m.length != 3 || m[0].length != 3) {
             throw new IllegalArgumentException("Incorrect array size in " + this.getClass().getSimpleName());
         }
         for (int i = 0; i < 3; i++)
@@ -14,6 +14,9 @@ public class Matrix3X3 {
     }
 
     public Matrix3X3(double[] arr) {
+        if (arr.length != (9)) {
+            throw new IllegalArgumentException("Incorrect array size in " + this.getClass().getSimpleName());
+        }
         data = arr;
     }
 
