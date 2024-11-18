@@ -123,4 +123,40 @@ public class Matrix4X4 {
         }
         return new Matrix4X4(result);
     }
+
+    public double determinant() {
+        return determinantRecursive(this);
+    }
+
+
+    private double determinantRecursive(Matrix4X4 matrix) {
+        if (matrix.data.length != 16) {
+            throw new IllegalArgumentException("Matrix must be 4x4");
+        }
+        double det = 0;
+        for (int i = 0; i < 4; i++) {
+            det += Math.pow(-1, i) * matrix.getAt(0, i) * determinant3x3(matrix, i);
+        }
+        return det;
+    }
+
+
+    private double determinant3x3(Matrix4X4 matrix, int col) {
+        double[][] minor = new double[3][3];
+        int minorRow = 0;
+        for (int i = 1; i < 4; i++) {
+            int minorCol = 0;
+            for (int j = 0; j < 4; j++) {
+                if (j != col) {
+                    minor[minorRow][minorCol] = matrix.getAt(i, j);
+                    minorCol++;
+                }
+            }
+            minorRow++;
+        }
+
+        return minor[0][0] * (minor[1][1] * minor[2][2] - minor[1][2] * minor[2][1]) -
+                minor[0][1] * (minor[1][0] * minor[2][2] - minor[1][2] * minor[2][0]) +
+                minor[0][2] * (minor[1][0] * minor[2][1] - minor[1][1] * minor[2][0]);
+    }
 }

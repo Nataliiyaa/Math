@@ -174,4 +174,16 @@ public class Matrix4X4Test {
         Matrix4X4 result = matrix1.sub(matrix2);
         assertArrayEquals(new double[]{-15, -13, -11, -9, -7, -5, -3, -1, 1, 3, 5, 7, 9, 11, 13, 15}, result.getData(), 0.001);
     }
+
+    @Test
+    void testDeterminant4x4() {
+        double[][] m = {
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 15, 16}
+        };
+        Matrix4X4 matrix = new Matrix4X4(m);
+        assertEquals(0, matrix.determinant(), 0.001);
+    }
 }

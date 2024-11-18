@@ -123,4 +123,28 @@ public class Matrix3X3 {
         }
         return new Matrix3X3(result);
     }
+
+    public double determinant() {
+        return data[0] * (data[4] * data[8] - data[5] * data[7]) -
+                data[1] * (data[3] * data[8] - data[5] * data[6]) +
+                data[2] * (data[3] * data[7] - data[4] * data[6]);
+    }
+
+    public Matrix3X3 inverse() {
+        double det = determinant();
+        if (Math.abs(det) < 1e-10) {
+            throw new ArithmeticException("Матрица вырожденная, обратной матрицы не существует");
+        }
+        double[][] inv = new double[3][3];
+        inv[0][0] = (data[4] * data[8] - data[5] * data[7]) / det;
+        inv[0][1] = (data[2] * data[7] - data[1] * data[8]) / det;
+        inv[0][2] = (data[1] * data[5] - data[2] * data[4]) / det;
+        inv[1][0] = (data[5] * data[6] - data[3] * data[8]) / det;
+        inv[1][1] = (data[0] * data[8] - data[2] * data[6]) / det;
+        inv[1][2] = (data[2] * data[3] - data[0] * data[5]) / det;
+        inv[2][0] = (data[3] * data[7] - data[4] * data[6]) / det;
+        inv[2][1] = (data[1] * data[6] - data[0] * data[7]) / det;
+        inv[2][2] = (data[0] * data[4] - data[1] * data[3]) / det;
+        return new Matrix3X3(inv);
+    }
 }

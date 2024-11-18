@@ -111,4 +111,39 @@ public class Matrix3X3Test {
         Matrix3X3 result = matrix1.sub(matrix2);
         assertArrayEquals(new double[]{-8, -6, -4, -2, 0, 2, 4, 6, 8}, result.getData(), 0.001);
     }
+
+    @Test
+    void testDeterminant3x3() {
+        double[][] m = {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9}
+        };
+        Matrix3X3 matrix = new Matrix3X3(m);
+        assertEquals(0, matrix.determinant(), 0.001);
+    }
+
+    @Test
+    void testInverse3x3() {
+        double[][] m = {
+                {2, 1, -1},
+                {0, 2, 3},
+                {3, 1, 1}
+        };
+        Matrix3X3 matrix = new Matrix3X3(m);
+        Matrix3X3 inverse = matrix.inverse();
+        Matrix3X3 identity = matrix.mul(inverse); // Проверка, что произведение равно единичной матрице
+        assertArrayEquals(new double[]{1,0,0,0,1,0,0,0,1}, identity.getData(), 0.001);
+    }
+
+    @Test
+    void testInverse3x3Singular() {
+        double[][] m = {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9}
+        };
+        Matrix3X3 matrix = new Matrix3X3(m);
+        assertThrows(ArithmeticException.class, () -> matrix.inverse());
+    }
 }
