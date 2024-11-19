@@ -1,95 +1,124 @@
 package Math;
 
 public class Vector4f{
-    private double[] values;
+    final Vector vector;
 
-    public Vector4f(double x, double y, double z, double w) {
-        values = new double[]{x, y, z, w};
+    /***
+    Конструктор вектора, принимает одномерный массив
+     ***/
+    public Vector4f(double[] v) {
+        this.vector = new Vector(v);
     }
 
-    public double[] getValues() {
-        return values;
+    /***
+    Возвращает копию вектора
+     ***/
+    public double[] getData() {
+        return vector.getData();
     }
 
+    /***
+    Возвращает первую координату вектора
+     ***/
     public double getX() {
-        return values[0];
+        return vector.getData()[0];
     }
 
+    /***
+    Возвращает вторую координату вектора
+     ***/
     public double getY() {
-        return values[1];
+        return vector.getData()[1];
     }
 
+    /***
+    Возвращает третью координату вектора
+     ***/
     public double getZ() {
-        return values[2];
+        return vector.getData()[2];
     }
 
+    /***
+    Возвращает четвертую координату вектора
+     ***/
     public double getW() {
-        return values[3];
+        return vector.getData()[3];
     }
 
+    /***
+    Возвращает размерность вектора
+     ***/
+    public int getSize(){
+        return 4;
+    }
+
+    /***
+    Возвращает значение элемента вектора под индексом idx
+     ***/
     public double at(int idx) {
-        return values[idx];
+        return vector.getData()[idx];
     }
 
-    private static final float EPSILON = 1e-10f;
+    /***
+    Изменяет значение элемента вектор под индексом idx на значение value
+     ***/
+    public void setAt(int idx, double value) {
+        vector.setAt(idx, value);
+    }
 
+    /***
+    Возвращает длину вектора
+     ***/
     public double length() {
-        double lenSqr = values[0] * values[0] + values[1] * values[1] + values[2] * values[2] + values[3] * values[3];
-        if (lenSqr < EPSILON)
-            return 0;
-        return (float)Math.sqrt(lenSqr);
+        return vector.length();
     }
 
+    /***
+    Вывод вектора в консоль
+     ***/
     public void print() {
-        System.out.print("[");
-        for (int i = 0; i < values.length - 1; i++) {
-            System.out.printf("%s, \n", values[i]);
-
-        }
-        System.out.print(values[values.length - 1] + "]\n");
+        vector.print();
     }
 
+    /***
+    Сложение векторов
+     ***/
     public Vector4f add(Vector4f other) {
-        double[] resultData = new double[4];
-        for (int i = 0; i < 4; i++) {
-            resultData[i] = values[i] + other.values[i];
-        }
-        return new Vector4f(resultData[0], resultData[1], resultData[2], resultData[3]);
+        return new Vector4f(vector.add(other.vector).getData());
     }
 
+    /***
+    Вычитание векторов
+     ***/
     public Vector4f sub(Vector4f other) {
-        double[] resultData = new double[4];
-        for (int i = 0; i < 4; i++) {
-            resultData[i] = values[i] - other.values[i];
-        }
-        return new Vector4f(resultData[0], resultData[1], resultData[2], resultData[3]);
+        return new Vector4f(vector.sub(other.vector).getData());
     }
 
-    public Vector4f multiply(double scalar) {
-        double[] resultData = new double[4];
-        for (int i = 0; i < 4; i++) {
-            resultData[i] = values[i] * scalar;
-        }
-        return new Vector4f(resultData[0], resultData[1], resultData[2], resultData[3]);
+    /***
+    Умножение вектора на число
+     ***/
+    public Vector4f mul(double scalar) {
+        return new Vector4f(vector.mul(scalar).getData());
     }
 
+    /***
+    Деление вектора на число
+     ***/
     public Vector4f div(double scalar) {
-        if (scalar == 0) {
-            throw new ArithmeticException("Деление на ноль!");
-        }
-        return multiply(1.0 / scalar);
+        return new Vector4f(vector.div(scalar).getData());
     }
 
+    /***
+    Нормализация вектора
+     ***/
     public Vector4f normalize() {
-        double magnitude = Math.sqrt(getX() * getX() + getY() * getY() + getZ() * getZ() + getW() * getW());
-        if (magnitude == 0) {
-            return new Vector4f(0, 0, 0, 0);
-        }
-        return new Vector4f(getX() / magnitude, getY() / magnitude, getZ() / magnitude, getW() / magnitude);
+        return new Vector4f(vector.normalize().getData());
     }
 
-    // Скалярное произведение
+    /***
+    Скалярное произведение векторов
+     ***/
     public double dotProduct(Vector4f other) {
-        return this.getX() * other.getX() + this.getY() * other.getY() + this.getZ() * other.getZ() + this.getW() * other.getW();
+        return vector.dotProduct(other.vector);
     }
 }

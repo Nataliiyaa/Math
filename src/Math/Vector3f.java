@@ -1,101 +1,128 @@
 package Math;
 
 public class Vector3f{
-    private double[] values;
+    final Vector vector;
 
-    public Vector3f(double x, double y, double z) {
-        values = new double[]{x, y, z};
+    /***
+    Конструктор вектора, принимает одномерный массив
+     ***/
+    public Vector3f(double[] v) {
+        this.vector = new Vector(v);
     }
 
-    public double[] getValues() {
-        return values;
+    /***
+    Возвращает копию вектора
+     ***/
+    public double[] getData() {
+        return vector.getData();
     }
 
+    /***
+    Возвращает первую координату вектора
+     ***/
     public double getX() {
-        return values[0];
+        return vector.getData()[0];
     }
 
+    /***
+    Возвращает вторую координату вектора
+     ***/
     public double getY() {
-        return values[1];
+        return vector.getData()[1];
     }
 
+    /***
+    Возвращает третью координату вектора
+     ***/
     public double getZ() {
-        return values[2];
+        return vector.getData()[2];
     }
 
+    /***
+    Возвращает размерность вектора
+     ***/
+    public int getSize(){
+        return 3;
+    }
+
+    /***
+    Возвращает значение элемента вектора под индексом idx
+     ***/
     public double at(int idx) {
-        return values[idx];
+        return vector.getData()[idx];
     }
 
-    private static final float EPSILON = 1e-10f;
+    /***
+    Изменяет значение элемента вектор под индексом idx на значение value
+     ***/
+    public void setAt(int idx, double value) {
+        vector.setAt(idx, value);
+    }
 
+    /***
+    Возвращает длину вектора
+     ***/
     public double length() {
-        double lenSqr = values[0] * values[0] + values[1] * values[1] + values[2] * values[2];
-        if (lenSqr < EPSILON)
-            return 0;
-        return (float)Math.sqrt(lenSqr);
+        return vector.length();
     }
 
+    /***
+    Вывод вектора в консоль
+     ***/
     public void print() {
-        System.out.print("[");
-        for (int i = 0; i < values.length - 1; i++) {
-            System.out.printf("%s, \n", values[i]);
-
-        }
-        System.out.print(values[values.length - 1] + "]\n");
+        vector.print();
     }
 
+    /***
+    Сложение векторов
+     ***/
     public Vector3f add(Vector3f other) {
-        double[] resultData = new double[3];
-        for (int i = 0; i < 3; i++) {
-            resultData[i] = values[i] + other.values[i];
-        }
-        return new Vector3f(resultData[0], resultData[1], resultData[2]);
+        return new Vector3f(vector.add(other.vector).getData());
     }
 
+    /***
+    Вычитание векторов
+     ***/
     public Vector3f sub(Vector3f other) {
-        double[] resultData = new double[3];
-        for (int i = 0; i < 3; i++) {
-            resultData[i] = values[i] - other.values[i];
-        }
-        return new Vector3f(resultData[0], resultData[1], resultData[2]);
+        return new Vector3f(vector.sub(other.vector).getData());
     }
 
-    public Vector3f multiply(double scalar) {
-        double[] resultData = new double[3];
-        for (int i = 0; i < 3; i++) {
-            resultData[i] = values[i] * scalar;
-        }
-        return new Vector3f(resultData[0], resultData[1], resultData[2]);
+    /***
+    Умножение вектора на число
+     ***/
+    public Vector3f mul(double scalar) {
+        return new Vector3f(vector.mul(scalar).getData());
     }
 
+    /***
+    Деление вектора на число
+     ***/
     public Vector3f div(double scalar) {
-        if (scalar == 0) {
-            throw new ArithmeticException("Деление на ноль!");
-        }
-        return multiply(1.0 / scalar);
+        return new Vector3f(vector.div(scalar).getData());
     }
 
+    /***
+    Нормализация вектора
+     ***/
     public Vector3f normalize() {
-        double magnitude = Math.sqrt(getX() * getX() + getY() * getY() + getZ() * getZ());
-        if (magnitude == 0) {
-            return new Vector3f(0, 0, 0);
-        }
-        return new Vector3f(getX() / magnitude, getY() / magnitude, getZ() / magnitude);
+        return new Vector3f(vector.normalize().getData());
     }
 
-    // Скалярное произведение
+    /***
+    Скалярное произведение векторов
+     ***/
     public double dotProduct(Vector3f other) {
-        return this.getX() * other.getX() + this.getY() * other.getY() + this.getZ() * other.getZ();
+        return vector.dotProduct(other.vector);
     }
 
-    // Векторное произведение
+    /***
+     Векторное произведение
+     ***/
     public Vector3f crossProduct(Vector3f other) {
-        return new Vector3f(
-                this.getY() * other.getZ() - this.getZ() * other.getY(),
+        double[] v = new double[]{this.getY() * other.getZ() - this.getZ() * other.getY(),
                 this.getZ() * other.getX() - this.getX() * other.getZ(),
-                this.getX() * other.getY() - this.getY() * other.getX()
-        );
+                this.getX() * other.getY() - this.getY() * other.getX()};
+        return new Vector3f(v);
     }
 
 }

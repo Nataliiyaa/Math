@@ -1,88 +1,112 @@
 package Math;
 
 public class Vector2f{
-    private double[] values;
+    final Vector vector;
 
-    public Vector2f(double x, double y) {
-        values = new double[]{x, y};
+    /***
+    Конструктор вектора, принимает одномерный массив
+     ***/
+    public Vector2f(double[] v) {
+        this.vector = new Vector(v);
     }
 
-    public double[] getValues() {
-        return values;
+    /***
+    Возвращает копию вектора
+     ***/
+    public double[] getData() {
+        return vector.getData();
     }
 
+    /***
+    Возвращает первую координату вектора
+     ***/
     public double getX() {
-        return values[0];
+        return vector.getData()[0];
     }
 
+    /***
+    Возвращает вторую координату вектора
+     ***/
     public double getY() {
-        return values[1];
+        return vector.getData()[1];
     }
 
+    /***
+    Возвращает размерность вектора
+     ***/
+    public int getSize(){
+        return 2;
+    }
 
+    /***
+    Возвращает значение элемента вектора под индексом idx
+     ***/
     public double at(int idx) {
-        return values[idx];
+        return vector.getData()[idx];
+    }
+
+    /***
+    Изменяет значение элемента вектор под индексом idx на значение value
+     ***/
+    public void setAt(int idx, double value) {
+        vector.setAt(idx, value);
     }
 
     private static final float EPSILON = 1e-10f;
 
+    /***
+    Возвращает длину вектора
+     ***/
     public double length() {
-        double lenSqr = values[0] * values[0] + values[1] * values[1];
-        if (lenSqr < EPSILON)
-            return 0;
-        return (float)Math.sqrt(lenSqr);
+        return vector.length();
     }
 
+    /***
+    Вывод вектора в консоль
+     ***/
     public void print() {
-        System.out.print("[");
-        for (int i = 0; i < values.length - 1; i++) {
-            System.out.printf("%s, \n", values[i]);
-
-        }
-        System.out.print(values[values.length - 1] + "]\n");
+        vector.print();
     }
 
+    /***
+    Сложение векторов
+     ***/
     public Vector2f add(Vector2f other) {
-        double[] resultData = new double[2];
-        for (int i = 0; i < 2; i++) {
-            resultData[i] = values[i] + other.values[i];
-        }
-        return new Vector2f(resultData[0], resultData[1]);
+        return new Vector2f(vector.add(other.vector).getData());
     }
 
+    /***
+    Вычитание векторов
+     ***/
     public Vector2f sub(Vector2f other) {
-        double[] resultData = new double[2];
-        for (int i = 0; i < 2; i++) {
-            resultData[i] = values[i] - other.values[i];
-        }
-        return new Vector2f(resultData[0], resultData[1]);
+        return new Vector2f(vector.sub(other.vector).getData());
     }
 
-    public Vector2f multiply(double scalar) {
-        double[] resultData = new double[2];
-        for (int i = 0; i < 2; i++) {
-            resultData[i] = values[i] * scalar;
-        }
-        return new Vector2f(resultData[0], resultData[1]);
+    /***
+    Умножение вектора на число
+     ***/
+    public Vector2f mul(double scalar) {
+        return new Vector2f(vector.mul(scalar).getData());
     }
 
+    /***
+    Деление вектора на число
+     ***/
     public Vector2f div(double scalar) {
-        if (scalar == 0) {
-            throw new ArithmeticException("Деление на ноль!");
-        }
-        return multiply(1.0 / scalar);
+        return new Vector2f(vector.div(scalar).getData());
     }
 
+    /***
+    Нормализация вектора
+     ***/
     public Vector2f normalize() {
-        double magnitude = Math.sqrt(getX() * getX() + getY() * getY());
-        if (magnitude == 0) {
-            return new Vector2f(0, 0);
-        }
-        return new Vector2f(getX() / magnitude, getY() / magnitude);
+        return new Vector2f(vector.normalize().getData());
     }
 
-    // Скалярное произведение
+    /***
+    Скалярное произведение векторов
+     ***/
     public double dotProduct(Vector2f other) {
-        return this.getX() * other.getX() + this.getY() * other.getY();
+        return vector.dotProduct(other.vector);
     }
 }

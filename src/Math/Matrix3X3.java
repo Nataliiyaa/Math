@@ -1,150 +1,143 @@
 package Math;
 
 public class Matrix3X3 {
-    private double[] data;
+    private Matrix matrix;
 
-    public Matrix3X3(double[][] m) {
-        data = new double[9];
-        if (m.length != 3 || m[0].length != 3) {
-            throw new IllegalArgumentException("Incorrect array size in " + this.getClass().getSimpleName());
+    /***
+    Конструктор матрицы, принимает двумерный массив
+     ***/
+    public Matrix3X3(double[][] data) {
+        if (data.length != 3 || data[0].length != 3) {
+            throw new IllegalArgumentException("Матрица должна быть 3x3");
         }
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-                data[i * 3 + j] = m[i][j];
+        this.matrix = new Matrix(data);
     }
 
-    public Matrix3X3(double[] arr) {
-        if (arr.length != (9)) {
-            throw new IllegalArgumentException("Incorrect array size in " + this.getClass().getSimpleName());
-        }
-        data = arr;
-    }
-
+    /***
+    Возвращает значение элемента с индексом [row][col]
+     ***/
     public double getAt(int row, int col) {
-        return data[row * 3 + col];
+        return matrix.getAt(row, col);
     }
 
+    /***
+    Изменяет значение элемента с индексом [row][col] на значение value
+     ***/
     public void setAt(int row, int col, float value) {
-        data[row * 3 + col] = value;
+        matrix.setAt(row, col, value);
     }
 
-    public double[] getData() {
-        return data;
+    /***
+    Возвращает копию матрицы
+     ***/
+    public double[][] getData() {
+        return matrix.getData();
     }
 
+    /***
+    Создает пустую матрицу
+     ***/
+    public Matrix3X3() {
+        this(new double[3][3]);
+    }
+
+    /***
+    Создает нулевую матрицу
+     ***/
     public static Matrix3X3 zero() {
-        return new Matrix3X3(new double[9]);
+        return new Matrix3X3();
     }
 
+    /***
+    Создает единичную матрицу
+     ***/
     public static Matrix3X3 one() {
-        Matrix3X3 m = zero();
-        for (int i = 0; i < 3; i++)
-            m.setAt(i, i, 1);
-        return m;
+        double[][] oneData = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+        return new Matrix3X3(oneData);
     }
 
-    public Matrix3X3 mul(double number) {
-        double[] arr = new double[9];
-        for (int i = 0; i < arr.length; i++)
-            arr[i] = this.data[i] * number;
-        return new Matrix3X3(arr);
+    /***
+    Умножение матрицы на другую матрицу
+     ***/
+    public Matrix3X3 mul(Matrix3X3 other) {
+        return new Matrix3X3(matrix.mul(other.matrix).getData());
     }
 
+    /***
+    Умножение матрицы на число
+     ***/
+    public Matrix3X3 mul(double n) {
+        return new Matrix3X3(matrix.mul(n).getData());
+    }
+
+    /***
+    Умножение матрицы на вектор
+     ***/
     public Vector3f mul(Vector3f v) {
-        double[] data = v.getValues();
-        float[] arr = new float[3];
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-                arr[i] += (float) (this.getAt(i, j) * data[j]);
-        return new Vector3f(arr[0], arr[1], arr[2]);
+        return new Vector3f(matrix.mul(v.vector).getData());
     }
 
-    public Matrix3X3 mul(Matrix3X3 m) {
-        double[] result = new double[9];
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                double sum = 0;
-                for (int k = 0; k < 3; k++) {
-                    sum += data[i * 3 + k] * m.getAt(k, j);
-                }
-                result[i * 3 + j] = sum;
-            }
-        }
-
-        return new Matrix3X3(result);
-    }
-
+    /***
+    Вывод матрицы в консоль
+     ***/
     public void print() {
-        System.out.print("[");
-        for (int i = 0; i < data.length - 1; i++) {
-            System.out.printf("%s, ", data[i]);
-            if ((i + 1) % 3 == 0 && i != data.length - 1) {
-                System.out.println();
-                System.out.print(" ");
-            }
-        }
-        System.out.print(data[data.length - 1] + "]\n");
+        matrix.print();
     }
 
-    public void transpose() {
-        double[] transposed = new double[9];
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                transposed[j * 3 + i] = data[i * 3 + j];
-            }
-        }
-        data = transposed;
-    }
-
+    /***
+    Транспонирует матрицу и возвращает её
+     ***/
     public Matrix3X3 transposed() {
-        double[] transposed = new double[9];
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                transposed[j * 3 + i] = data[i * 3 + j];
-            }
-        }
-        return new Matrix3X3(transposed);
+        return new Matrix3X3(matrix.transposed().getData());
     }
 
-    public Matrix3X3 add(Matrix3X3 matrix) {
-
-        double[] result = new double[9];
-        for (int i = 0; i < data.length; i++) {
-            result[i] = data[i] + matrix.getData()[i];
-        }
-        return new Matrix3X3(result);
+    /***
+    Сложение матриц
+     ***/
+    public Matrix3X3 add(Matrix3X3 other) {
+        return new Matrix3X3(matrix.add(other.matrix).getData());
     }
 
-    public Matrix3X3 sub(Matrix3X3 matrix) {
-
-        double[] result = new double[9];
-        for (int i = 0; i < data.length; i++) {
-            result[i] = data[i] - matrix.getData()[i];
-        }
-        return new Matrix3X3(result);
+    /***
+    Вычитание матриц
+     ***/
+    public Matrix3X3 sub(Matrix3X3 other) {
+        return new Matrix3X3(matrix.sub(other.matrix).getData());
     }
 
+    /***
+    Определитель матрицы
+     ***/
     public double determinant() {
-        return data[0] * (data[4] * data[8] - data[5] * data[7]) -
-                data[1] * (data[3] * data[8] - data[5] * data[6]) +
-                data[2] * (data[3] * data[7] - data[4] * data[6]);
+        double[][] d = matrix.getData();
+        return d[0][0] * (d[1][1] * d[2][2] - d[1][2] * d[2][1]) -
+                d[0][1] * (d[1][0] * d[2][2] - d[1][2] * d[2][0]) +
+                d[0][2] * (d[1][0] * d[2][1] - d[1][1] * d[2][0]);
     }
 
+    /***
+    Возвращает обратную матрицу
+     ***/
     public Matrix3X3 inverse() {
+        double[][] d = matrix.getData();
         double det = determinant();
-        if (Math.abs(det) < 1e-10) {
-            throw new ArithmeticException("Матрица вырожденная, обратной матрицы не существует");
+
+        if (det == 0) {
+            throw new ArithmeticException("Определитель равен нулю. Обратной матрицы не существует.");
         }
-        double[][] inv = new double[3][3];
-        inv[0][0] = (data[4] * data[8] - data[5] * data[7]) / det;
-        inv[0][1] = (data[2] * data[7] - data[1] * data[8]) / det;
-        inv[0][2] = (data[1] * data[5] - data[2] * data[4]) / det;
-        inv[1][0] = (data[5] * data[6] - data[3] * data[8]) / det;
-        inv[1][1] = (data[0] * data[8] - data[2] * data[6]) / det;
-        inv[1][2] = (data[2] * data[3] - data[0] * data[5]) / det;
-        inv[2][0] = (data[3] * data[7] - data[4] * data[6]) / det;
-        inv[2][1] = (data[1] * data[6] - data[0] * data[7]) / det;
-        inv[2][2] = (data[0] * data[4] - data[1] * data[3]) / det;
-        return new Matrix3X3(inv);
+
+        double[][] inverseData = new double[3][3];
+
+        inverseData[0][0] = (d[1][1] * d[2][2] - d[1][2] * d[2][1]) / det;
+        inverseData[0][1] = (d[0][2] * d[2][1] - d[0][1] * d[2][2]) / det;
+        inverseData[0][2] = (d[0][1] * d[1][2] - d[0][2] * d[1][1]) / det;
+        inverseData[1][0] = (d[1][2] * d[2][0] - d[1][0] * d[2][2]) / det;
+        inverseData[1][1] = (d[0][0] * d[2][2] - d[0][2] * d[2][0]) / det;
+        inverseData[1][2] = (d[0][2] * d[1][0] - d[0][0] * d[1][2]) / det;
+        inverseData[2][0] = (d[1][0] * d[2][1] - d[1][1] * d[2][0]) / det;
+        inverseData[2][1] = (d[0][1] * d[2][0] - d[0][0] * d[2][1]) / det;
+        inverseData[2][2] = (d[0][0] * d[1][1] - d[0][1] * d[1][0]) / det;
+
+        return new Matrix3X3(inverseData);
     }
 }
