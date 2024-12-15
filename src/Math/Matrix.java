@@ -1,9 +1,12 @@
 package Math;
 
+import java.util.Arrays;
+
 public class Matrix {
     private double[][] data;
     private int rows;
     private int cols;
+    private static final float EPSILON = 1e-10f;
 
     /***
     Конструктор матрицы, принимает двумерный массив
@@ -19,6 +22,7 @@ public class Matrix {
             System.arraycopy(m[i], 0, this.data[i], 0, cols);
         }
     }
+
 
     /***
     Вывод матрицы в консоль
@@ -286,5 +290,18 @@ public class Matrix {
         }
 
         return new Matrix(E); // Возвращаем обратную матрицу
+    }
+
+    public boolean equals(Matrix other) {
+        if (this == other) return true;
+        if (other == null || this.getRows() != other.getRows() || this.getCols() != other.getCols()) return false;
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[0].length; j++) {
+                if (Math.abs(data[i][j] - other.getData()[i][j]) >= EPSILON) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

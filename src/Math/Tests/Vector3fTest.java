@@ -92,4 +92,18 @@ public class Vector3fTest {
         Vector3f result = vectorA.crossProduct(vectorB);
         assertArrayEquals(new double[]{-3.0, 6.0, -3.0}, result.getData());
     }
+
+    @Test
+    void testEquals_identicalVectors() {
+        Vector3f v1 = new Vector3f(new double[]{1.0, 2.0, 3.0});
+        Vector3f v2 = new Vector3f(new double[]{1.0, 2.0, 3.0});
+        assertEquals(true, v1.equals(v2));
+    }
+
+    @Test
+    void testEquals_differentVectors() {
+        Vector3f v1 = new Vector3f(new double[]{1.0, 2.0, 3.0});
+        Vector3f v2 = new Vector3f(new double[]{1.0, 2.0, 4.0});
+        assertEquals(false, v1.equals(v2));
+    }
 }

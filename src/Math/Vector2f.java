@@ -52,8 +52,6 @@ public class Vector2f{
         vector.setAt(idx, value);
     }
 
-    private static final float EPSILON = 1e-10f;
-
     /***
     Возвращает длину вектора
      ***/
@@ -108,5 +106,12 @@ public class Vector2f{
      ***/
     public double dotProduct(Vector2f other) {
         return vector.dotProduct(other.vector);
+    }
+
+    /***
+     Сравнение двух векторов
+     ***/
+    public boolean equals(Vector2f other) {
+        return vector.equals(other.vector);
     }
 }

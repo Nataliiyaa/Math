@@ -125,4 +125,11 @@ public class Vector3f{
         return new Vector3f(v);
     }
 
+    /***
+     Сравнение двух векторов
+     ***/
+    public boolean equals(Vector3f other) {
+        return vector.equals(other.vector);
+    }
+
 }

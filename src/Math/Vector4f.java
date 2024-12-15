@@ -121,4 +121,11 @@ public class Vector4f{
     public double dotProduct(Vector4f other) {
         return vector.dotProduct(other.vector);
     }
+
+    /***
+     Сравнение двух векторов
+     ***/
+    public boolean equals(Vector4f other) {
+        return vector.equals(other.vector);
+    }
 }

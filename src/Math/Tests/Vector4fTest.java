@@ -100,4 +100,18 @@ public class Vector4fTest {
         Vector4f v2 = new Vector4f(new double[]{5.0, 6.0, 7.0, 8.0});
         assertEquals(70.0, v1.dotProduct(v2));
     }
+
+    @Test
+    void testEquals_identicalVectors() {
+        Vector4f v1 = new Vector4f(new double[]{1.0, 2.0, 3.0});
+        Vector4f v2 = new Vector4f(new double[]{1.0, 2.0, 3.0});
+        assertEquals(true, v1.equals(v2));
+    }
+
+    @Test
+    void testEquals_differentVectors() {
+        Vector4f v1 = new Vector4f(new double[]{1.0, 2.0, 3.0});
+        Vector4f v2 = new Vector4f(new double[]{1.0, 2.0, 4.0});
+        assertEquals(false, v1.equals(v2));
+    }
 }

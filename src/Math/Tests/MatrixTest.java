@@ -301,4 +301,48 @@ public class MatrixTest {
         assertNotSame(matrix, inversion);
 
     }
+
+    @Test
+    void testEquals_identicalMatrices() {
+        double[][] data = {{1.0, 2.0}, {3.0, 4.0}};
+        Matrix m1 = new Matrix(data);
+        Matrix m2 = new Matrix(data);
+        assertEquals(true, m2.equals(m1));
+    }
+
+    @Test
+    void testEquals_differentMatrices() {
+        Matrix m1 = new Matrix(new double[][]{{1.0, 2.0}, {3.0, 4.0}});
+        Matrix m2 = new Matrix(new double[][]{{1.0, 2.0}, {3.0, 5.0}});
+        assertNotEquals(m1, m2);
+    }
+
+    @Test
+    void testEquals_differentDimensions() {
+        Matrix m1 = new Matrix(new double[][]{{1.0, 2.0}, {3.0, 4.0}});
+        Matrix m2 = new Matrix(new double[][]{{1.0, 2.0}});
+        assertNotEquals(m1, m2);
+    }
+
+    @Test
+    void testEquals_nullMatrix() {
+        Matrix m1 = new Matrix(new double[][]{{1.0, 2.0}, {3.0, 4.0}});
+        assertNotEquals(m1, null);
+    }
+
+    @Test
+    void testEquals_almostEqualMatrices() {
+        Matrix m1 = new Matrix(new double[][]{{1.0, 2.0}, {3.0, 4.0}});
+        Matrix m2 = new Matrix(new double[][]{{1.0, 2.00000000001}, {3.0, 4.0}});
+        assertEquals(m1.equals(m2), true); // из-за EPSILON
+    }
+
+    @Test
+    void testGetData_returnsCopy() {
+        double[][] data = {{1.0, 2.0}, {3.0, 4.0}};
+        Matrix m1 = new Matrix(data);
+        double[][] copiedData = m1.getData();
+        copiedData[0][0] = 100.0; // Изменение копии не должно влиять на оригинал
+        assertNotEquals(100.0, m1.getData()[0][0]);
+    }
 }

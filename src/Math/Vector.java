@@ -7,7 +7,7 @@ public class Vector {
     Конструктор вектора, принимает одномерный массив
      ***/
     public Vector(double[] data) {
-        this.data = data;
+        this.data = data.clone();
     }
 
     /***
@@ -152,5 +152,19 @@ public class Vector {
             result += this.at(i) * other.at(i);
         }
         return result;
+    }
+
+    /***
+     Сравнение двух векторов
+     ***/
+    public boolean equals(Vector other) {
+        if (other == null || this.getSize() != other.getSize()) return false;
+
+        for (int i = 0; i < data.length; i++) {
+            if (Math.abs(data[i] - other.getData()[i]) >= EPSILON) {
+                return false;
+            }
+        }
+        return true;
     }
 }

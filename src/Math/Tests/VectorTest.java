@@ -174,4 +174,52 @@ public class VectorTest {
 
         assertEquals("Векторы должны быть одинаковой размерности для скалярного произведения.", exception.getMessage());
     }
+
+    @Test
+    void testEquals_identicalVectors() {
+        Vector v1 = new Vector(new double[]{1.0, 2.0, 3.0});
+        Vector v2 = new Vector(new double[]{1.0, 2.0, 3.0});
+        assertEquals(true, v1.equals(v2));
+    }
+
+    @Test
+    void testEquals_differentVectors() {
+        Vector v1 = new Vector(new double[]{1.0, 2.0, 3.0});
+        Vector v2 = new Vector(new double[]{1.0, 2.0, 4.0});
+        assertEquals(false, v1.equals(v2));
+    }
+
+    @Test
+    void testEquals_differentSizes() {
+        Vector v1 = new Vector(new double[]{1.0, 2.0, 3.0});
+        Vector v2 = new Vector(new double[]{1.0, 2.0});
+        assertEquals(false, v1.equals(v2));
+    }
+
+    @Test
+    void testEquals_nullVector() {
+        Vector v1 = new Vector(new double[]{1.0, 2.0, 3.0});
+        assertEquals(false, v1.equals(null));
+    }
+
+    @Test
+    void testEquals_almostEqualVectors() {
+        Vector v1 = new Vector(new double[]{1.0, 2.0, 3.0});
+        Vector v2 = new Vector(new double[]{1.0, 2.0, 3.000000000001});
+        assertEquals(true, v1.equals(v2)); // Из-за EPSILON
+    }
+
+    @Test
+    void testGetData_returnsCopy() {
+        Vector v1 = new Vector(new double[]{1.0, 2.0, 3.0});
+        double[] data = v1.getData();
+        data[0] = 100.0; // Изменение копии не должно влиять на оригинал
+        assertNotEquals(100.0, v1.getData()[0]);
+    }
+
+    @Test
+    void testGetSize(){
+        Vector v1 = new Vector(new double[]{1.0, 2.0, 3.0});
+        assertEquals(3, v1.getSize());
+    }
 }
